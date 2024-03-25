@@ -6,6 +6,7 @@ import game_points
 from textwrap import wrap
 
 num_level = 0 #Номер уровня
+answer = ''
 
 
 def fun_start(event):
@@ -15,11 +16,18 @@ def fun_start(event):
     but = []
 
     def f_k(event, num_but):  # Обработка события нажатия кнопки
-    #    global but_x, but_y, but
-        ent.insert(END, but[num_but]['text'])
-        but[num_but].place(x=but_x[num_but], y=530)
+        #global but_x, but_y, but
+        global answer
+#        ent.insert(END, but[num_but]['text'])
+        if but_y[num_but] == 530:
+            return
+        answer += but[num_but]['text']
+        num_ans = len(answer) - 1
+        new_x[num_but] = 50*num_ans + 100
+        but_y[num_but] = 530
+        but[num_but].place(x=new_x[num_but], y=530)
         #        game.itemconfig(but[num_but], y=580)
-        if ent.get() == list_answer[num_level]:
+        if answer == list_answer[num_level]:
             label1['text'] = "Верно"
             label1['foreground'] = "green"
             game.update()
@@ -29,17 +37,24 @@ def fun_start(event):
             time.sleep(3)
             new_level()
 
-    def delete_t(event): # Функция очистки поля
-        ent.delete(0, END)
+    def delete_t(event): # Функция очистки ответа
+        global answer
+        answer = ''
+        for i in range(count_but):
+            new_x[i] = 50 * i + 100
+            but_x[i] = 50 * i + 100
+            but_y[i] = 480
+            but[i].place(x=new_x[i], y=480)
+        #ent.delete(0, END)
 
     def new_level():
-        global num_level
+        global num_level, answer
 
         label_points['text'] = game_points.__points
 
         num_level += 1
         label1['text'] = ""
-        ent.delete(0, END)
+#        ent.delete(0, END)
         if num_level > len(list_answer) - 1: # Завершение игры
             label1['text'] = 'Игра окончена'
             game.update()
@@ -53,7 +68,12 @@ def fun_start(event):
         photo[3]['image'] = list_img[num_level][3]
         for i in range(count_but):
             but[i]['text'] = list_letters[num_level][i]
+            new_x[num_but] = 50 * i + 100
+            but_x[num_but] = 50 * i + 100
+            but_y[num_but] = 480
+            but[i].place(x=new_x[num_but], y=480)
         #    game.itemconfig(but[i], text=list_letters[num_level][i])
+        answer = ""
 
     game = Toplevel()
     game.geometry('800x600+0+50')
@@ -104,21 +124,24 @@ def fun_start(event):
 
 
     ## Создание набора кнопок
+    old_x = [0 for i in range(count_but)]
+    new_x = [0 for i in range(count_but)]
     for i in range(0, count_but):
         but.append(Button(game, text=list_letters[0][i], width=4, height=2))
         but[i].bind('<ButtonPress>', lambda event, par1=i: f_k(event, par1))
         but_x.append(0)
         but_y.append(0)
         but_x[i] = 50*i + 100
+        old_x[i] = 50*i + 100
         but_y[i] = 480
         but[i].place(x=but_x[i], y=but_y[i])
 
     del_b = Button(game, text='Очистить', width=10, height=2)
-    del_b.place(x=300, y=545)
+    del_b.place(x=300, y=20)
     del_b.bind('<ButtonPress>', delete_t)
 
-    ent = Entry(game, width=20, font=('Arial', 12)) ## Поле ввода
-    ent.place(x=100, y=550)
+#    ent = Entry(game, width=20, font=('Arial', 12)) ## Поле ввода
+#    ent.place(x=100, y=550)
 
 
 
