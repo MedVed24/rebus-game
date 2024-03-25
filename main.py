@@ -83,6 +83,18 @@ def fun_start(event):
     abc = 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ'
     list_letters = []
     count_but = 13
+    def on_tips_button_click(event):
+        if game_points.__points <= 0:
+            label1['text'] = "У вас нет баллов! Иди работай!"
+            return
+        game_points.points_down()
+        label_points['text'] = game_points.__points
+
+    but_tips = Button(game, text='Подсказка', width=10, height=2)
+    but_tips.place(x=700, y=300)
+    but_tips.bind('<ButtonPress>', on_tips_button_click)
+
+
 
     for i in range(len(list_answer)):
         ansi = list_answer[i]
