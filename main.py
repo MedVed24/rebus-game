@@ -3,6 +3,7 @@ import random
 import time
 from PIL import Image, ImageTk
 import game_points
+import tips_logic
 from textwrap import wrap
 
 num_level = 0 #Номер уровня
@@ -83,17 +84,20 @@ def fun_start(event):
     abc = 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ'
     list_letters = []
     count_but = 13
-    def on_tips_button_click(event):
-        if game_points.__points <= 0:
-            label1['text'] = "У вас нет баллов! Иди работай!"
-            return
-        game_points.points_down()
-        label_points['text'] = game_points.__points
+
+    def update_tips_text(text):
+        label1['text']=text
+
+    def update_points_text(points):
+        label_points['text'] = points
 
     but_tips = Button(game, text='Подсказка', width=10, height=2)
     but_tips.place(x=700, y=300)
-    but_tips.bind('<ButtonPress>', on_tips_button_click)
-
+    but_tips.bind('<ButtonPress>', lambda event: tips_logic.on_tips_button_click(
+        event=event,
+        label_text=lambda text: update_tips_text(text),
+        label_points=lambda points: update_points_text(points)
+    ))
 
 
     for i in range(len(list_answer)):
