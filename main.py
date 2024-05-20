@@ -10,6 +10,7 @@ from textwrap import wrap
 
 num_level = 0 #Номер уровня
 answer = ''
+num_click = 0
 
 
 def fun_start(event):
@@ -93,6 +94,8 @@ def fun_start(event):
     abc = 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ'
     list_letters = []
     count_but = 15
+    label_tips = Label(game, text='')
+    label_tips.place(x=0, y=0)
 
     def update_tips_text(text):
         label1['text'] = text
@@ -100,12 +103,21 @@ def fun_start(event):
     def update_points_text(points):
         label_points['text'] = points
 
+    def show_tips():
+        global num_click
+        if num_click > len(list_answer[num_level])-1:
+            return
+        label_tips['text'] += list_answer[num_level][num_click]
+        num_click += 1
+
+
     but_tips = Button(game, text='Подсказка', width=10, height=2)
     but_tips.place(x=700, y=300)
     but_tips.bind('<ButtonPress>', lambda event: tips_logic.on_tips_button_click(
         event=event,
         label_text=lambda text: update_tips_text(text),
-        label_points=lambda points: update_points_text(points)
+        label_points=lambda points: update_points_text(points),
+        show_tips=lambda: show_tips()
     ))
 
     for i in range(len(list_answer)):
