@@ -14,7 +14,7 @@ num_click = 0
 
 
 def fun_start(event):
-    global num_level, list_answer
+    global num_level, list_answer, num_click
     but_x = []
     but_y = []
     but = []
@@ -54,8 +54,9 @@ def fun_start(event):
         #ent.delete(0, END)
 
     def new_level():
-        global num_level, answer
-
+        global num_level, answer, num_click
+        num_click = 0
+        label_tips['text'] = ''
         label_points['text'] = game_points.__points
 
         num_level += 1
@@ -94,8 +95,8 @@ def fun_start(event):
     abc = 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ'
     list_letters = []
     count_but = 15
-    label_tips = Label(game, text='')
-    label_tips.place(x=0, y=0)
+    label_tips = Label(game, text='', font=10)
+    label_tips.place(x=620, y=350)
 
     def update_tips_text(text):
         label1['text'] = text
@@ -115,6 +116,8 @@ def fun_start(event):
     but_tips.place(x=700, y=300)
     but_tips.bind('<ButtonPress>', lambda event: tips_logic.on_tips_button_click(
         event=event,
+        num_tips_click=num_click,
+        len_answer=len(list_answer[num_level]),
         label_text=lambda text: update_tips_text(text),
         label_points=lambda points: update_points_text(points),
         show_tips=lambda: show_tips()

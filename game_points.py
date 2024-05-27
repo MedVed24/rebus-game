@@ -1,4 +1,4 @@
-__points = 100
+__points = 0
 
 
 def points_up():
