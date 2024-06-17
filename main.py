@@ -5,6 +5,7 @@ import time
 from PIL import Image, ImageTk
 import game_points
 import tips_logic
+import os
 from textwrap import wrap
 #import test_read
 
@@ -12,13 +13,23 @@ num_level = 0 #Номер уровня
 answer = ''
 num_click = 0
 
-
+def save_current_level_to_file():
+    global num_level
+    l_file = open("config.txt", "w")
+    l_file.write(str(num_level))
+    l_file.close()
 def fun_start(event):
     global num_level, list_answer, num_click
     but_x = []
     but_y = []
     but = []
 
+    if os.path.isfile("config.txt"):
+        l_file = open("config.txt", "r")
+        num_level = int(l_file.readlines()[0])
+        l_file.close()
+    else:
+        save_current_level_to_file()
     def f_k(event, num_but):  # Обработка события нажатия кнопки
         #global but_x, but_y, but
         global answer
@@ -60,6 +71,7 @@ def fun_start(event):
         label_points['text'] = game_points.__points
 
         num_level += 1
+        save_current_level_to_file()
         label1['text'] = ""
 #        ent.delete(0, END)
         if num_level > len(list_answer) - 1: # Завершение игры
@@ -89,7 +101,7 @@ def fun_start(event):
 
     game = Toplevel()
     game.geometry('800x600+0+50')
-    game.title("Игра 1 уровень")
+    game.title("Игра "+str(num_level)+" уровень")
     but_press = 0
     num_but = 0
     abc = 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ'
@@ -141,19 +153,19 @@ def fun_start(event):
 
     photo=[]
     photo.append('')
-    photo[0] = Label(game,image=list_img[0][0], width=150, height=150)
+    photo[0] = Label(game,image=list_img[num_level][0], width=150, height=150)
     photo[0].place(x=100, y=100)
 
     photo.append('')
-    photo[1] = Label(game, image=list_img[0][1], width=150, height=150)
+    photo[1] = Label(game, image=list_img[num_level][1], width=150, height=150)
     photo[1].place(x=300, y=100)
 
     photo.append('')
-    photo[2] = Label(game, image=list_img[0][2], width=150, height=150)
+    photo[2] = Label(game, image=list_img[num_level][2], width=150, height=150)
     photo[2].place(x=100, y=300)
 
     photo.append('')
-    photo[3] = Label(game, image=list_img[0][3], width=150, height=150)
+    photo[3] = Label(game, image=list_img[num_level][3], width=150, height=150)
     photo[3].place(x=300, y=300)
 
     label_points = Label(game, text=game_points.__points, font=("Arial", 20))
