@@ -1,23 +1,38 @@
 from tkinter import *
-from tkinter.messagebox import showerror, showwarning, showinfo
+from tkinter.messagebox import showinfo, askyesno
 import random
 import time
-from PIL import Image, ImageTk
+from PIL import ImageTk
 import game_points
 import tips_logic
 import os
-from textwrap import wrap
-#import test_read
+import pyglet
+
 
 num_level = 0 #Номер уровня
 answer = ''
 num_click = 0
 
+
+def new_game_start(event):
+    confirm = askyesno(title="Новая игра", message="Хотите начать новую игру?")
+    if confirm:
+        l_file = open("config.txt", "w")
+        l_file.write("0")
+        game_points.__points = 0
+        l_file.close()
+        fun_start(event)
+    else:
+        return
+
+
 def save_current_level_to_file():
     global num_level
     l_file = open("config.txt", "w")
-    l_file.write(str(num_level))
+    l_file.write(str(num_level)+"\n")
     l_file.close()
+
+
 def fun_start(event):
     global num_level, list_answer, num_click
     but_x = []
@@ -123,9 +138,8 @@ def fun_start(event):
         label_tips['text'] += list_answer[num_level][num_click]
         num_click += 1
 
-
-    but_tips = Button(game, text='Подсказка', width=10, height=2)
-    but_tips.place(x=700, y=300)
+    but_tips = Button(game, text='Подсказка 10б', width=12, height=2, font="Arial 12", fg='green')
+    but_tips.place(x=650, y=300)
     but_tips.bind('<ButtonPress>', lambda event: tips_logic.on_tips_button_click(
         event=event,
         num_tips_click=num_click,
@@ -145,7 +159,6 @@ def fun_start(event):
         # Перемешиваем список
         random.shuffle(list_ansi)
         list_letters.append(list_ansi)
-    print(list_letters)
     count_but = 15
 
     label1 = Label(game, font=("Arial", 30))
@@ -153,7 +166,7 @@ def fun_start(event):
 
     photo=[]
     photo.append('')
-    photo[0] = Label(game,image=list_img[num_level][0], width=150, height=150)
+    photo[0] = Label(game, image=list_img[num_level][0], width=150, height=150)
     photo[0].place(x=100, y=100)
 
     photo.append('')
@@ -192,8 +205,8 @@ def fun_start(event):
     for i in range(count_b[num_level], count_but):
         but[i].place_forget()
 
-    del_b = Button(game, text='Очистить', width=16, height=2, font='Arial 12')
-    del_b.place(x=300, y=20)
+    del_b = Button(game, text='Очистить', width=10, height=2, font='Arial 12', fg='red')
+    del_b.place(x=520, y=300)
     del_b.bind('<ButtonPress>', delete_t)
 
 #    ent = Entry(game, width=20, font=('Arial', 12)) ## Поле ввода
@@ -214,10 +227,17 @@ def fun_desc(event):
     text1.pack()
     descr.update()
 
-def fun_opt(event):
+def fun_shop(event):
     option = Tk()
     option.geometry('800x600+0+50')
-    option.title("Настройка игры")
+    option.title("Магазин")
+
+    label_balance = Label(option, text="Ваш баланс:", font=("Arial", 20))
+    label_balance.place(x=0, y=0)
+
+    label_points = Label(option, text=game_points.__points, font=("Arial", 20))
+    label_points.place(x=170, y=0)
+
 
 menu=Tk()
 menu.geometry('790x700+0+50')
@@ -253,7 +273,11 @@ imgm = ImageTk.PhotoImage(file='menuimg.jpeg')
 lblm = Label(menu, image=imgm, width=790, height=770)
 lblm.pack()
 
-start = Button(menu, width=40, height=3, text='Старт')
+new_game = Button(menu, width=40, height=3, text='Новая игра')
+new_game.place(x=250, y=370)
+new_game.bind('<ButtonPress>', new_game_start)
+
+start = Button(menu, width=40, height=3, text='Продолжить')
 start.place(x=250, y=430)
 start.bind('<ButtonPress>', fun_start)
 
@@ -261,8 +285,8 @@ desc = Button(menu, width=40, height=3, text='Описание') ##Описан�
 desc.place(x=250, y=490)
 desc.bind('<ButtonPress>', fun_desc)
 
-opt = Button(menu, width=40, height=3, text='Настройки') ##Описание кнопки настройки
+opt = Button(menu, width=40, height=3, text='Магазин') ##Описание кнопки настройки
 opt.place(x=250, y=550)
-opt.bind('<ButtonPress>', fun_opt)
+opt.bind('<ButtonPress>', fun_shop)
 
 menu.mainloop()
