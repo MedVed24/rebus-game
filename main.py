@@ -212,8 +212,6 @@ def fun_start(event):
 #    ent = Entry(game, width=20, font=('Arial', 12)) ## Поле ввода
 #    ent.place(x=100, y=550)
 
-
-
 def fun_desc(event):
     descr = Tk()
     descr.geometry('800x600+0+50')
@@ -228,22 +226,30 @@ def fun_desc(event):
     descr.update()
 
 def fun_shop(event):
-    option = Tk()
-    option.geometry('800x600+0+50')
-    option.title("Магазин")
+    shop = Toplevel()
+    shop.geometry('800x600+0+50')
+    shop.title("Магазин")
 
-    label_balance = Label(option, text="Ваш баланс:", font=("Arial", 20))
+    label_balance = Label(shop, text="Ваш баланс:", font=("Arial", 20))
     label_balance.place(x=0, y=0)
 
-    label_points = Label(option, text=game_points.__points, font=("Arial", 20))
+    label_points = Label(shop, text=game_points.__points, font=("Arial", 20))
     label_points.place(x=170, y=0)
+
+    blue_pink_lbl = Label(shop, image=blue_pi_photo, width=150, height=150)
+    blue_pink_lbl.place(x=25, y=50)
+
+    blue_pink_style_buy = Button(shop, width=12, height=3, text='Купить за 10б', foreground='green', font=("Arial", 10))
+    blue_pink_style_buy.place(x=55, y=212)
+    blue_pink_style_buy.bind('<ButtonPress>')
+
 
 
 menu=Tk()
 menu.geometry('790x700+0+50')
 menu.title("4 фото одно слово")
 list_img = []
-
+blue_pi_photo = ImageTk.PhotoImage(file='blue_pink.jpeg')
 #with open("answers2.txt", "r", encoding="utf8") as file:
 #    list_answer = file.read().splitlines()
 
