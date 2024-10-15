@@ -235,20 +235,11 @@ def fun_shop(event):
     label_points = Label(shop, text=game_points.__points, font=("Arial", 20))
     label_points.place(x=170, y=0)
 
-    blue_pink_lbl = Label(shop, image=blue_pi_photo, width=150, height=150)
-    blue_pink_lbl.place(x=25, y=50)
-
-    blue_pink_style_buy = Button(shop, width=12, height=3, text='Скоро', foreground='green', font=("Arial", 10))
-    blue_pink_style_buy.place(x=55, y=212)
-    blue_pink_style_buy.bind('<ButtonPress>')
-
-
-
 menu=Tk()
 menu.geometry('790x700+0+50')
 menu.title("4 фото одно слово")
 list_img = []
-blue_pi_photo = ImageTk.PhotoImage(file='blue_pink.jpeg')
+
 #with open("answers2.txt", "r", encoding="utf8") as file:
 #    list_answer = file.read().splitlines()
 
