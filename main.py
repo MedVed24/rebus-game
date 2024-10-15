@@ -238,7 +238,7 @@ def fun_shop(event):
     blue_pink_lbl = Label(shop, image=blue_pi_photo, width=150, height=150)
     blue_pink_lbl.place(x=25, y=50)
 
-    blue_pink_style_buy = Button(shop, width=12, height=3, text='Купить за 10б', foreground='green', font=("Arial", 10))
+    blue_pink_style_buy = Button(shop, width=12, height=3, text='Скоро', foreground='green', font=("Arial", 10))
     blue_pink_style_buy.place(x=55, y=212)
     blue_pink_style_buy.bind('<ButtonPress>')
 
